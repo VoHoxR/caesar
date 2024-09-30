@@ -1,38 +1,47 @@
-phrase = str(input(f"\ninput phrase you want ciphered\n\n>> "))
-caesar_shift = int(input(f"\n\ninput the shift you want\n\n>> "))
+import random
+
+phrase = str(input(f"\nInput phrase you want ciphered\n\n>> "))
+caesar_shift = int(input(f"\n\nInput the shift you want\n\n>> "))
+
+
+charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 def caesar_cipher(text: str, shift: int):
     result = ""
-
     for char in text:
-        if char.islower():
-            result += chr((ord(char) + shift - 97) % 26 + 97)
-        elif char.isupper():
-            result += chr((ord(char) + shift - 65) % 26 + 65)
-        elif char.isdigit():
-            result += chr((ord(char) + shift - 48) % 10 + 48)
+        if char in charset:
+            new_index = (charset.index(char) + shift) % len(charset)
+            new_char = charset[new_index]
+            if random.choice([True, False]):
+                new_char = new_char.upper()
+            else:
+                new_char = new_char.lower()
+            result += new_char
         else:
             result += char
-        
     return result
 
-def caesar_decipher(secret: str, shift: int):
+def caesar_decipher(text: str, shift: int):
     result = ""
-
-    for char in secret:
-        if char.islower():
-            result += chr((ord(char) - shift - 97) % 26 + 97)
-        elif char.isupper():
-            result += chr((ord(char) - shift - 65) % 26 + 65)
-        elif char.isdigit():
-            result += chr((ord(char) - shift - 48) % 10 + 48)
+    for char in text:
+        if char.lower() in charset:
+            new_index = (charset.index(char.lower()) - shift) % len(charset)
+            new_char = charset[new_index]
+            if char.isupper():
+                new_char = new_char.upper()
+            else:
+                new_char = new_char.lower()
+            result += new_char
         else:
             result += char
-
     return result
 
-message = caesar_cipher(phrase,caesar_shift)
-print(f"\n\n{message}")
 
-unciphered = caesar_decipher(message,caesar_shift)
-print(f"\n\n\nunciphered message: {unciphered}")
+secret_message = str(input(f"\nInput phrase you want ciphered\n\n>> "))
+number = int(input(f"\n\nInput the shift you want\n\n>> "))
+
+encrypted_message = caesar_cipher(secret_message, number)
+print("Encrypted:", encrypted_message)
+print("Decrypted:", secret_message)
+
+#THIS CODE IS COPYRIGHTED BY KADEN HOOD
